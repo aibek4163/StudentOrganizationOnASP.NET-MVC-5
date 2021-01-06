@@ -1,0 +1,273 @@
+﻿@model StudentOrganization.Models.IndexViewModel
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "My Profile";
+}
+
+<h2>@ViewBag.Title.</h2>
+
+<p class="text-success">@ViewBag.StatusMessage</p>
+@if (Request.IsAuthenticated)
+{
+    <div>
+        <div class="row mt-3 ">
+            <div class="col-3">
+
+                <img src="@Model.picture_url" height="200" class="w-100 myBox">
+
+
+                <div class="card mt-5" style="width: 100%;">
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">@Model.Name @Model.Surname</li>
+                        <li class="list-group-item"><a href="@Url.Action(User.Identity.GetUserId(),"Organization/UserOrganization")"><i class="fas fa-id-card"></i>My Organization</a></li>
+                        <li class="list-group-item"><a href="#"><i class="fas fa-cogs"></i>Settings</a></li>
+                        <li class="list-group-item"><a href="/logout" style="color: #862F3B"><i class="fas fa-sign-out-alt"></i>Log out</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="col-6">
+                <h4 class="offset-3 ">Edit Profile</h4>
+                <!--
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Email exist!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        Your account updated!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Old Password Wrong!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        Not same passwords!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        Your password changed!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+    -->
+                @using (Html.BeginForm("UpdateFullName", "Organization"))
+                {
+                    <input type="hidden" name="id" value="<%=user.getId()%>">
+                    <div class="edit_profile border-bottom mb-3 pb-3 offset-3">
+                        <div class="form-group">
+                            <label for="exampleInputEmail1">Email address</label>
+                            <input type="email" class="form-control" name="email" id="exampleInputEmail1" aria-describedby="emailHelp" value="@Model.email" readonly>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFullName1">Name</label>
+                            <input type="text" class="form-control" name="name" id="exampleInputFullName1" aria-describedby="fullnameHelp" value="@Model.Name">
+                            @*@Html.EditorFor(u => u.Name,new {@class= "form-control", @id= "exampleInputFullName1" })*@
+                            <small id="fullnameHelp" class="form-text text-muted">Input your name</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputFullName1">Surname</label>
+                            <input type="text" class="form-control" name="surname" id="exampleInputFullName1" aria-describedby="fullnameHelp" value="@Model.Surname">
+                            @*@Html.EditorFor(u => u.Name,new {@class= "form-control", @id= "exampleInputFullName1" })*@
+                            <small id="fullnameHelp" class="form-text text-muted">Input your surname</small>
+                        </div>
+                        <button class="btn text-white" style="background-color: #180B7A">Update Profile</button>
+                    </div>
+                }
+                @using (Html.BeginForm("UpdatePicture", "Organization"))
+                {
+                    <input type="hidden" name="id" value="<%=user.getId()%>">
+                    <div class="edit_picture border-bottom mb-3 pb-3 offset-3">
+                        <h4>Edit Picture</h4>
+                        <div class="form-group">
+                            <label for="inputPictureUrl">Edit Picture URL</label>
+                            <input type="text" class="form-control" name="picture_url" id="inputPictureUrl" aria-describedby="pictureurl" value="@Model.picture_url">
+                            <small id="pictureurl" class="form-text text-muted">Input your picture URL</small>
+                        </div>
+                        <button class="btn text-white" style="background-color: #180B7A">Update Picture</button>
+                    </div>
+                 }
+
+                    <p>
+                        <a class="btn btn-primary offset-3" data-toggle="collapse" style="background-color: #180B7A" href="#multiCollapseExample1" role="button" aria-expanded="false" aria-controls="multiCollapseExample1">Update Password</a>
+                    </p>
+                </div>
+
+            <div class="col-3">
+
+                <div class="card mb-3" style="max-width: 18rem;">
+                    <div class="card-header">
+                        Create
+                    </div>
+                    <ul class="list-group list-group-flush">
+                        <li class="list-group-item">
+                            <!-- Button trigger modal -->
+                            <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addLanguage">
+                                ADD NEW
+                            </button>
+                        </li>
+                        <li class="list-group-item">Dapibus ac facilisis in</li>
+                        <li class="list-group-item">Vestibulum at eros</li>
+                    </ul>
+                </div>
+
+                <!-- Modal -->
+                <div class="modal fade" id="addLanguage" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            @using (Html.BeginForm("New_Organization", "Organization"))
+                            {
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel">Add Organization</h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Name Organization</label>
+                                        @*@Html.TextBoxFor(o => o.name, new { @class = "form-control" })*@
+                                        <input type="text" name="name" class = "form-control" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Organization Description</label>
+                                        @*@Html.TextAreaFor(o => o.description, new { @class = "form-control" })*@
+                                        <input type="text" name="description" class="form-control" required/>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Organization Logo</label>
+                                        @*@Html.TextAreaFor(o => o.picture_url, new { @class = "form-control" })*@
+                                        <input type="text" name="picture_url" class="form-control" required/>
+                                    </div>
+                                    @*<div class="form-group">
+                                        <label>Leader</label>
+                                        @Html.DropDownListFor(model => model.leader_id, ViewBag.Students as List<SelectListItem>, new { @class = "form-control" })
+                                        <input type="text" name="picture_url" class="form-control" />
+                                    </div>*@
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-success">Add</button>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+
+                <div class="card bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Header</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Light card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+
+                <div class="card bg-light mb-3" style="max-width: 18rem;">
+                    <div class="card-header">Header</div>
+                    <div class="card-body">
+                        <h5 class="card-title">Light card title</h5>
+                        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+        <div class="row">
+            <div class="col">
+                <div class="collapse multi-collapse" id="multiCollapseExample1">
+                    <div class="card card-body">
+                        <dl class="dl-horizontal">
+                            <dt>Password:</dt>
+                            <dd>
+                                [
+                                @if (Model.HasPassword)
+                                {
+                                    @Html.ActionLink("Update Password", "ChangePassword")
+                                }
+                                else
+                                {
+                                    @Html.ActionLink("Set Password", "SetPassword")
+                                }
+                                ]
+                            </dd>
+                            <dt>External logins:</dt>
+                            <dd>
+                                @Model.Logins.Count [
+                                @Html.ActionLink("Manage", "ManageLogins") ]
+                            </dd>
+                            @*
+                                Номера телефонов можно использовать в качестве второго проверочного фактора для системы двухфакторной проверки подлинности.
+
+                                 В <a href="https://go.microsoft.com/fwlink/?LinkId=403804">этой статье</a>
+                                    можно узнать, как для этого приложения ASP.NET настроить двухфакторную проверку подлинности с использованием SMS.
+
+                                 Настроив двухфакторную проверку подлинности, раскомментируйте следующий блок
+                            *@
+                            @*
+                                <dt>Номер телефона:</dt>
+                                <dd>
+                                    @(Model.PhoneNumber ?? "None")
+                                    @if (Model.PhoneNumber != null)
+                                    {
+                                        <br />
+                                        <text>[&nbsp;&nbsp;@Html.ActionLink("Change", "AddPhoneNumber")&nbsp;&nbsp;]</text>
+                                        using (Html.BeginForm("RemovePhoneNumber", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <text>[<input type="submit" value="Удалить" class="btn-link" />]</text>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        <text>[&nbsp;&nbsp;@Html.ActionLink("Add", "AddPhoneNumber")
+                                    }
+                                </dd>
+                            *@
+                            <dt>Двухфакторная проверка подлинности:</dt>
+                            <dd>
+                                <p>
+                                    Поставщики двухфакторной проверки подлинности не настроены. В <a href="https://go.microsoft.com/fwlink/?LinkId=403804">этой статье</a>
+                                    можно узнать, как настроить двухфакторную проверку подлинности для этого приложения ASP.NET.
+                                </p>
+                                @*@if (Model.TwoFactor)
+                                    {
+                                        using (Html.BeginForm("DisableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <text>Включено
+                                            <input type="submit" value="Отключить" class="btn btn-link" />
+                                            </text>
+                                        }
+                                    }
+                                    else
+                                    {
+                                        using (Html.BeginForm("EnableTwoFactorAuthentication", "Manage", FormMethod.Post, new { @class = "form-horizontal", role = "form" }))
+                                        {
+                                            @Html.AntiForgeryToken()
+                                            <text>Отключено
+                                            <input type="submit" value="Включить" class="btn btn-link" />
+                                            </text>
+                                        }
+                                    }*@
+                            </dd>
+                        </dl>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+}

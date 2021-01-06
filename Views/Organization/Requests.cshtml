@@ -1,0 +1,82 @@
+﻿@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "Requests";
+    Layout = "~/Views/Shared/_LayoutManageOrg.cshtml";
+    var functions = ((StudentOrganization.Controllers.OrganizationController)this.ViewContext.Controller);
+    var currentOrg = functions.getCurrentOrgByLeaderId(User.Identity.GetUserId());
+}
+
+<div class="col-9">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+        <h1 class="h2">All Requests</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <!-- Button trigger modal -->
+            @using (Html.BeginForm("HandleRequestsAll", "Organization"))
+            {
+                <input type="hidden" name="org_id" value="@currentOrg" />
+                <button type="submit" name="btn" value="confirmAll" class="btn btn-success">
+                    Confirm All
+                </button>
+                <button type="submit" name="btn" value="rejectAll" class="btn btn-danger ml-2">
+                    Clear Requests
+                </button>
+            }
+        </div>
+    </div>
+    <div class="table-responsive-xl">
+        <table class="table table-striped">
+            <thead>
+                <tr style="text-align: center;">
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Email</th>
+                    <th>Image</th>
+                    <th>Group</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            @foreach (var r in ViewBag.Requests)
+            {
+                foreach (var s in ViewBag.Students)
+                {
+                    <tbody style="text-align: center;">
+                        <tr>
+                            @if (r.studentID == s.Id)
+                            {
+                                using (Html.BeginForm("HandleRequests", "Organization"))
+                                {
+                                    <td>@s.Name</td>
+                                    <td>@s.Surname</td>
+                                    <td>@s.Email</td>
+                                    <td><img width="30%" src="@s.picture_url" /></td>
+                                    foreach (var g in ViewBag.Groups)
+                                    {
+                                        if (s.group_id == g.id)
+                                        {
+                                            <td>@g.group_name</td>
+                                        }
+                                    }
+                                    <td>
+                                        <input type="hidden" name="request_id" value="@r.id" />
+                                        <input type="hidden" name="student_id" value="@s.Id" />
+                                        <input type="hidden" name="org_id" value="@r.orgID" />
+                                        @if (functions.isInRequest(s.Id, currentOrg))
+                                        {
+                                            <button name="btn" value="confirm" type="submit" class="btn-sm btn-success">
+                                                Confirm
+                                            </button>
+                                            <button name="btn" value="reject" type="submit" class="btn-sm btn-danger">
+                                                Reject
+                                            </button>
+                                        }
+                                    </td>
+                                }
+                            }
+                        </tr>
+                    </tbody>
+                }
+            }
+        </table>
+    </div>
+</div>
+

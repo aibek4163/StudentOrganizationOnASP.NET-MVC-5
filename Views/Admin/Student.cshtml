@@ -1,0 +1,257 @@
+﻿@model StudentOrganization.Models.RegisterViewModel
+
+@{
+    ViewBag.Title = "Student";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+                <h1 class="h2">Students</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addGroup">
+                        ADD NEW
+                    </button>
+
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="addGroup" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <div class="modal-content">
+                        @using (Html.BeginForm("New_Student", "Admin"))
+                        {
+                            <fieldset id="SubmitForm">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="staticBackdropLabel"></h5>
+                                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                        <span aria-hidden="true">&times;</span>
+                                    </button>
+                                </div>
+                                <div class="modal-body">
+                                    <div class="form-group">
+                                        <label>Name:</label>
+                                        @*<input type="text" name="group_name"/>*@
+                                        @Html.TextBoxFor(s => s.Name, new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Surname:</label>
+                                        @*<input type="text" name="group_name"/>*@
+                                        @Html.TextBoxFor(s => s.Surname, new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Login:</label>
+                                        @*<input type="text" name="group_name"/>*@
+                                        @Html.TextBoxFor(s => s.Email, new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Password:</label>
+                                        @*<input type="text" name="group_name"/>*@
+                                        @Html.PasswordFor(s => s.Password, new { @class = "form-control" })
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Course</label>
+                                        <div class="col-md-10">
+                                            @Html.DropDownListFor(model => model.Course, ViewBag.Course as List<SelectListItem>, new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label>Group</label>
+                                        <div class="col-md-10">
+                                            @Html.DropDownListFor(m => m.Group, new SelectList(string.Empty, "Value", "Text"), "Select Group", new { @class = "form-control" })
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-success">Add</button>
+                                </div>
+                            </fieldset>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="table-responsive-xl">
+                <table class="table table-striped">
+                    <thead>
+                        <tr style="text-align: center;">
+                            <th>Name</th>
+                            <th>Surname</th>
+                            <th>Group</th>
+                            <th>Operations</th>
+                        </tr>
+                    </thead>
+                    @foreach (var s in ViewBag.Students)
+                    {
+                        <tbody style="text-align: center;">
+                            <tr>
+                                <td>@s.Name</td>
+                                <td>@s.Surname</td>
+                                @foreach (var g in ViewBag.Groups)
+                                {
+                                    if (g.id == s.group_id)
+                                    {
+                                <td>@g.group_name</td>
+                                    }
+                                }
+                                <td>
+                                    <a href="#editStudent" class="edit" data-toggle="modal">Edit</a>
+                                    <input type="hidden" class="id" value="@s.Id" />
+
+                                    <a href="#deleteStudent" class="delete" data-toggle="modal">Delete</a>
+                                    <input type="hidden" class="id" value="@s.Id" />
+                                </td>
+                            </tr>
+                        </tbody>
+                        <!-- Modal -->
+                        <div class="modal fade" id="editStudent" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                @using (Html.BeginForm("Edit_Student", "Admin"))
+                                {
+                                    <input type="hidden" id="id" name="id" value="id" />
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel_edit">Edit Student</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <div class="form-group">
+                                                <label>Name</label>
+                                                <input type="text" class="form-control" name="name">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Surname</label>
+                                                <input type="text" class="form-control" name="surname">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Login</label>
+                                                <input type="text" class="form-control" name="login">
+                                            </div>
+                                            <div class="form-group">
+                                                <label>Group</label>
+                                                <select name="group" class="form-control">
+                                                    @foreach (var gr in ViewBag.Groups)
+                                                    {
+                                                        if (s.group_id == gr.id)
+                                                        {
+                                                            <option value="@s.group_id" selected="selected">@gr.group_name</option>
+                                                        }
+                                                        else
+                                                        {
+                                                            <option value="@gr.id">@gr.group_name</option>
+                                                        }
+                                                    }
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                            <input type="submit" class="btn btn-info" value="Save" />
+                                        </div>
+                                    </div>
+                                }
+                            </div>
+                        </div>
+                        <!-- Modal -->
+                        <div class="modal fade" id="deleteLanguage<%=l.getId()%>" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                            <div class="modal-dialog">
+                                <form action="/update_language" method="post">
+                                    <input type="hidden" name="language_id" value="<%=l.getId()%>">
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="staticBackdropLabel_delete">Deleting <%=l.getName()%> Language</h5>
+                                            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                <span aria-hidden="true">&times;</span>
+                                            </button>
+                                        </div>
+                                        <div class="modal-body">
+                                            Delete <%=l.getName()%> Language?
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                            <button class="btn btn-primary" name="delete_btn">Yes</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    }
+                </table>
+            </div>
+        </main>
+    @section Scripts{
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('[data-google="tooltip"]').tooltip();
+
+                $('table .edit').on('click', function () {
+                    var id = $(this).parent().find('.id').val();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/Admin/FindStudent/' + id,
+                        success: function (student) {
+                            $('#editStudent input[name="id"]').val(student.Id);
+                            $('#editStudent input[name="name"]').val(student.Name);
+                            $('#editStudent input[name="surname"]').val(student.Surname);
+                            $('#editStudent input[name="login"]').val(student.Email);
+                            //$('#editStudent select[name="group"]').val(student.group.group_name);
+                            for (var i = 0; i < student.length; i++) {
+                                $('##editStudent select[name="group"]').append('<option value=' + student[i].Value + '>' + student[i].Text + '</option > ');
+                            }
+                        }
+                    })
+                })
+            });
+        </script>
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('[data-google="tooltip"]').tooltip();
+
+                $('table .delete').on('click', function () {
+                    var id = $(this).parent().find('.id').val();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/Admin/FindStudent/' + id,
+                        success: function (group) {
+                            $('#deleteGroup input[name="id"]').val(group.id);
+                            $('#deleteGroup input[name="group_name"]').val(group.group_name);
+                        }
+                    })
+                })
+            });
+        </script>
+        <script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#Course").change(function () {
+            $("#Group").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("getGroup")',
+                dataType: 'json',
+                data: { id: $("#Course").val() },
+                success: function (group) {
+
+                    $.each(group, function (i, group) {
+                        $("#Group").append('<option value="'
+                                                   + group.Value + '">'
+                            + group.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert(ex.Text);
+                }
+            });
+            return false;
+        })
+    });
+        </script>
+    }

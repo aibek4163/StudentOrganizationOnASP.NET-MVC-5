@@ -1,0 +1,84 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title - приложение ASP.NET</title>
+    @Styles.Render("~/Content/css")
+    @Scripts.Render("~/bundles/modernizr")
+</head>
+<body>
+    <nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
+        <a class="navbar-brand col-md-3 col-lg-2 mr-0 px-3" href="@Url.Action("Index","Home")">Admin Page</a>
+        <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-toggle="collapse" data-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <input class="form-control form-control-dark w-100" type="text" placeholder="Search" aria-label="Search">
+        <ul class="navbar-nav px-3">
+            <li class="nav-item text-nowrap">
+                <a class="nav-link" href="/home">Sign out</a>
+            </li>
+        </ul>
+    </nav>
+
+
+
+    <div class="container-fluid">
+        <div class="row">
+            <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+                <div class="sidebar-sticky pt-3">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link">
+                                <h5>Admin Panel</h5>
+                            </a>
+                        </li>
+                        <li class="nav-item">
+                            @*@Html.ActionLink("Groups", "Index", "Admin", new { @class = "nav-link active" })*@
+                            <a href="@Url.Action("Index", "Admin")" class="nav-link active">Admin</a>
+                        </li>
+                        <li class="nav-item">
+                            @*@Html.ActionLink("News", "News", "Admin", new { @class = "nav-link active" })*@
+                            <a href="@Url.Action("News", "Admin")" class="nav-link active">News</a>
+                        </li>
+                        <li class="nav-item">
+                            @*@Html.ActionLink("Student", "Student", "Admin", new { @class = "nav-link active" })*@
+                            <a href="@Url.Action("Student", "Admin")" class="nav-link active">Student</a>
+                        </li>
+                        <li class="nav-item">
+                            @*@Html.ActionLink("Organizations", "Organization", "Admin", new { @class = "nav-link active" })*@
+                            <a href="@Url.Action("Organization", "Admin")" class="nav-link active">Organization</a>
+                        </li>
+                        <li class="nav-item">
+                            @*@Html.Action("Coaches", "Index", "Coaches" ,new { @class = "nav -link active" })*@
+                            <a href="@Url.Action("Index", "Coaches")" class="nav-link active">Coaches</a>
+                        </li>
+                        <li class="nav-item">
+                            @*@Html.ActionLink("Courses", "Index", "Courses", new { @class = "nav-link active" })*@
+                            <a href="@Url.Action("Index", "Courses")" class="nav-link active">Courses</a>
+                        </li>
+                        <li class="nav-item">
+                            @*@Html.ActionLink("Events", "Index", "Events", new { @class = "nav-link active" })*@
+                            <a href="@Url.Action("Index", "Events")" class="nav-link active">Events</a>
+                        </li>
+                        @*<li class="nav-item">
+                            @Html.ActionLink("Sport Club", "SportClub", "Admin", new { @class = "nav-link active" })
+                        </li>*@
+                        @*<li class="nav-item">
+                            @Html.ActionLink("Coaches", "Coach", "Admin", new { @class = "nav-link active" })
+                        </li>*@
+                    </ul>
+                </div>
+            </nav>
+            
+            @RenderBody()
+        </div>
+    </div>
+
+
+        @Scripts.Render("~/bundles/jquery")
+        @Scripts.Render("~/bundles/bootstrap")
+        @RenderSection("scripts", required: false)
+</body>
+</html>

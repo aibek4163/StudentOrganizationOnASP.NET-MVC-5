@@ -1,0 +1,159 @@
+﻿
+@{
+    ViewBag.Title = "SportClub";
+    Layout = "~/Views/Shared/_LayoutAdmin.cshtml";
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <nav id="sidebarMenu" class="col-md-3 col-lg-2 d-md-block bg-light sidebar collapse">
+            <div class="sidebar-sticky pt-3">
+                <ul class="nav flex-column">
+                    <li class="nav-item">
+                        <a class="nav-link">
+                            <h5>Admin Panel</h5>
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Grops", "Index", "Admin", new { @class = "nav-link active" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("News", "News", "Admin", new { @class = "nav-link active" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Sport Club", "SportClub", "Admin", new { @class = "nav-link active" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Student", "Student", "Admin", new { @class = "nav-link active" })
+                    </li>
+                </ul>
+            </div>
+        </nav>
+
+        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-md-4">
+            <div class="chartjs-size-monitor" style="position: absolute; left: 0px; top: 0px; right: 0px; bottom: 0px; overflow: hidden; pointer-events: none; visibility: hidden; z-index: -1;"><div class="chartjs-size-monitor-expand" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:1000000px;height:1000000px;left:0;top:0"></div></div><div class="chartjs-size-monitor-shrink" style="position:absolute;left:0;top:0;right:0;bottom:0;overflow:hidden;pointer-events:none;visibility:hidden;z-index:-1;"><div style="position:absolute;width:200%;height:200%;left:0; top:0"></div></div></div>
+            <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+                <h1 class="h2">Sport Clubs</h1>
+                <div class="btn-toolbar mb-2 mb-md-0">
+                    <!-- Button trigger modal -->
+                    <button type="button" class="btn btn-success" data-toggle="modal" data-target="#addLanguage">
+                        ADD NEW
+                    </button>
+                </div>
+            </div>
+
+            <!-- Modal -->
+            <div class="modal fade" id="addLanguage" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                <div class="modal-dialog">
+                    <form action="/add_language" method="post">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="staticBackdropLabel">Add News</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <div class="form-group">
+                                    <label>Name Language</label>
+                                    <input type="text" class="form-control" name="language_name">
+                                </div>
+                                <div class="form-group">
+                                    <label>Code Language</label>
+                                    <input type="text" class="form-control" name="language_code">
+                                </div>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-success">Add</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+            <div class="table-responsive-xl">
+                <table class="table table-striped">
+                    <thead>
+                        <tr style="text-align: center;">
+                            <th>ID</th>
+                            <th>Coach Name</th>
+                            <th>Type of Sport</th>
+                            <th>Name</th>
+                            <th>Players Amount</th>
+                            <th>Operations</th>
+                        </tr>
+                    </thead>
+                    <tbody style="text-align: center;">
+                        <tr>
+                            <td><%=l.getId()%></td>
+                            <td><%=l.getName()%></td>
+                            <td><%=l.getCode()%></td>
+                            <td>
+                                <button type="button" class="btn btn-success" data-toggle="modal" data-target="#editLanguage<%=l.getId()%>">
+                                    Edit
+                                </button>
+                                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteLanguage<%=l.getId()%>">
+                                    Delete
+                                </button>
+                            </td>
+                            <!-- Modal -->
+                            <div class="modal fade" id="editLanguage<%=l.getId()%>" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <form action="/update_language" method="post">
+                                        <input type="hidden" name="language_id" value="<%=l.getId()%>">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel_edit">Edit Language</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                <div class="form-group">
+                                                    <label>Name Language</label>
+                                                    <input type="text" class="form-control" name="language_name" value="<%=l.getName()%>">
+                                                </div>
+                                                <div class="form-group">
+                                                    <label>Code Language</label>
+                                                    <input type="text" class="form-control" name="language_code" value="<%=l.getCode()%>">
+                                                </div>
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                                                <button type="submit" class="btn btn-success" name="edit_btn">Edit</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                            <!-- Modal -->
+                            <div class="modal fade" id="deleteLanguage<%=l.getId()%>" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                <div class="modal-dialog">
+                                    <form action="/update_language" method="post">
+                                        <input type="hidden" name="language_id" value="<%=l.getId()%>">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel_delete">Deleting <%=l.getName()%> Language</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body">
+                                                Delete <%=l.getName()%> Language?
+                                            </div>
+                                            <div class="modal-footer">
+                                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                <button class="btn btn-primary" name="delete_btn">Yes</button>
+                                            </div>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+</div>

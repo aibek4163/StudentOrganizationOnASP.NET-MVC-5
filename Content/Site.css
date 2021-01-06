@@ -1,0 +1,110 @@
+﻿body {
+    padding-top: 0px;
+    padding-bottom: 20px;
+}
+
+/* Set padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Override the default bootstrap behavior where horizontal description lists 
+   will truncate terms that are too long to fit in the left column 
+*/
+.dl-horizontal dt {
+    white-space: normal;
+}
+
+/* Set width on the form input elements since they're 100% wide by default */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+
+.footer {
+    margin-top: 85px;
+    background-color: #262323;
+}
+
+.footer_column {
+    display: flex;
+    justify-content: space-between;
+}
+
+.footer_nav {
+    float: right;
+}
+
+.nav_content {
+    display: none;
+    display: flex;
+    margin-top: 0;
+    position: static;
+    justify-content: space-between;
+}
+
+.nav_link {
+    margin-top: 40px;
+    margin-left: 90px;
+    color: white;
+    display: block;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+
+.nav_links {
+    color: white;
+    font-weight: 400;
+    text-decoration: none;
+}
+
+.footer_address {
+    margin-top: 35px;
+    margin-left: 25px;
+    width: 40%;
+}
+
+.footer_details {
+    clear: both;
+    float: right;
+    margin-top: 60px;
+}
+
+.nav_content li {
+    list-style: none;
+}
+
+.footer_details li {
+    list-style: none;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.text_decoration {
+    color: white;
+    font-weight: bold;
+}
+
+.logo_foot {
+    margin-top: 45px;
+}
+
+
+.myBox {
+    background-image: linear-gradient(purple, purple), linear-gradient(purple, purple), linear-gradient(purple, purple), linear-gradient(purple, purple);
+    background-repeat: no-repeat;
+    background-size: 4px 50%, 50% 4px, 4px 50%, 50% 4px, calc(100% - 8px) calc(100% - 8px);
+    background-position: left bottom, left bottom, right top, right top, 4px 4px;
+    /*height: 160px;
+    width: 160px;
+    margin: 20px;
+        linear-gradient(steelblue, steelblue)
+    */
+}
+
+
+

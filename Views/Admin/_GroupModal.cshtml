@@ -1,0 +1,31 @@
+﻿@model StudentOrganization.Models.Group
+
+<!-- Modal -->
+<div class="modal fade" id="addGroup" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+        <form action="/add_language" method="post">
+            <div class="modal-content">
+                <form action="New_Group">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Add Group</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="form-group">
+                            @Html.LabelFor(model => model.group_name)
+                            @Html.TextBoxFor(model => model.group_name, new { @class = "form-control" })
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                        <button type="button" class="btn btn-success" data-save="modal">Add</button>
+                    </div>
+                </form>
+            </div>
+        </form>
+    </div>
+</div>
+
+

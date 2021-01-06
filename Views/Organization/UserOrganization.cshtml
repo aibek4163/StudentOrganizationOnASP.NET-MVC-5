@@ -1,0 +1,133 @@
+﻿@model StudentOrganization.Models.RegisterViewModel
+@{
+    ViewBag.Title = "UserOrganization";
+    Layout = "~/Views/Shared/_LayoutManageOrg.cshtml";
+}
+
+<div class="col-9">
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 ">
+        <h1 class="h2">All Members</h1>
+        <div class="btn-toolbar mb-2 mb-md-0">
+            <!-- Button trigger modal -->
+            @*<button type="button" class="btn btn-success" data-toggle="modal" data-target="#addMember">
+                    Invite Member
+                </button>*@
+            <button type="button" class="btn btn-danger ml-2" data-toggle="modal" data-target="#kickAll">
+                Kick All Members
+            </button>
+        </div>
+
+        <!-- Kick All Member Modal -->
+        <div class="modal fade" id="kickAll" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="staticBackdropLabel">Invite Member</h5>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                    <div class="modal-body">
+                        <label>Kick All Members?</label>
+                    </div>
+                    @using (Html.BeginForm("KickAll", "Organization"))
+                    {
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                            <button type="submit" name="btn" value="yes" class="btn btn-primary">Yes</button>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="table-responsive-xl">
+        <table class="table table-striped">
+            <thead>
+                <tr style="text-align: center;">
+                    <th>Name</th>
+                    <th>Surname</th>
+                    <th>Email</th>
+                    <th>Group</th>
+                    <th>Image</th>
+                    <th>Operation</th>
+                </tr>
+            </thead>
+            @foreach (var s in ViewBag.Students)
+            {
+                <tbody style="text-align: center;">
+                    <tr>
+                        @foreach (var o in ViewBag.Organization)
+                        {
+                            if (s.organization_id == o.id)
+                            {
+                                <td>@s.Name</td>
+                                <td>@s.Surname</td>
+                                <td>@s.Email</td>
+                                <td>@s.group_id</td>
+                                <td><img src="@s.picture_url" width="30%" /></td>
+                                <td>
+                                    @*<a href="#deleteItem" class="kick">
+                                        <button type="submit" class="btn-sm btn-danger" id="kick" value="@s.Id" data-toggle="modal">
+                                            Kick
+                                        </button>
+                                    </a>*@
+                                    <a href="#deleteItem" class="kick" data-toggle="modal">
+                                        <button  class="btn-sm btn-danger">
+                                            Kick
+                                        </button>
+                                    </a>
+                                    <input type="hidden" class="id" value="@s.Id" />
+                                </td>
+                                <!-- Kick  Member Modal -->
+                                <div class="modal fade" id="deleteItem" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+                                    <div class="modal-dialog">
+                                        <div class="modal-content">
+                                            <div class="modal-header">
+                                                <h5 class="modal-title" id="staticBackdropLabel">Kick Member</h5>
+                                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                                    <span aria-hidden="true">&times;</span>
+                                                </button>
+                                            </div>
+                                            <div class="modal-body form-group">
+                                                <input type="text" name="student_name" class="form-control" readonly />
+                                            </div>
+                                            @using (Html.BeginForm("KickMember", "Organization"))
+                                            {
+                                                <input type="hidden" name="student_id" value="@s.Id" />
+                                                <div class="modal-footer">
+                                                    <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                                    <button type="submit" name="btn" value="yes" class="btn btn-primary">Yes</button>
+                                                </div>
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        }
+                    </tr>
+                </tbody>
+            }
+        </table>
+    </div>
+    @section Scripts{
+        <script type="text/javascript">
+            $(document).ready(function () {
+                $('[data-google="tooltip"]').tooltip();
+
+                $('table .kick').on('click', function () {
+                    var id = $(this).parent().find('.id').val();
+                    $.ajax({
+                        type: 'GET',
+                        url: '/Organization/FindMember/' + id,
+                        success: function (student) {
+                            $('#deleteItem input[name="student_id"]').val(student.Id);
+                            $('#deleteItem input[name="student_name"]').val(student.Email);
+                        }
+                    })
+                })
+            });
+        </script>        
+    }
+</div>
+

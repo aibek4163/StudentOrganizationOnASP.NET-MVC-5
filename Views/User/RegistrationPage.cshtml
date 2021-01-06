@@ -1,0 +1,100 @@
+﻿@model StudentOrganization.ViewModels.ViewStudentModel
+
+
+@{
+    ViewBag.Title = "Registration";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+
+<div class="my_container">
+    <h1 class="display-3">Register Account</h1>
+    <div class="register_form">
+        @using (Html.BeginForm("Register", "User"))
+        {
+            <div class="form-group row">
+                <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">First Name <span class="required">*</span></label>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(s => s.student.name, new { @class = "form-control form-control-lg", @id = "colFormLabelLg" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Last Name <span class="required">*</span></label>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(s => s.student.surname, new { @class = "form-control form-control-lg", @id = "colFormLabelLg" })
+                </div>
+            </div>            
+            <div class="form-group row">
+                <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Login <span class="required">*</span></label>
+                <div class="col-sm-6">
+                    @Html.TextBoxFor(s => s.student.login, new { @class = "form-control form-control-lg", @id = "colFormLabelLg" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Password <span class="required">*</span></label>
+                <div class="col-sm-6">
+                    @Html.PasswordFor(s => s.student.password, new { @class = "form-control form-control-lg", @id = "colFormLabelLg" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg"></label>
+                <div class="col-sm-6">
+                    <input type="password" class="form-control form-control-lg" id="colFormLabelLg" name="re_pass">
+                    <small id="passwordHelpBlock" class="form-text text-muted">
+                        Re type password. <span class="required">*</span>
+                    </small>
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Course <span class="required">*</span></label>
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(model => model.Course, ViewBag.Course as List<SelectListItem>, new { @class = "form-control" })
+                </div>
+            </div>
+            <div class="form-group row">
+                <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Group <span class="required">*</span></label>
+                <div class="col-sm-6">
+                    @Html.DropDownListFor(model => model.Group, new SelectList(string.Empty, "Value", "Text"), "Select Group", new { @class = "form-control" })
+                </div>
+            </div>
+                @*<div class="form-group row">
+            <label for="colFormLabelLg" class="col-sm-2 col-form-label col-form-label-lg">Select Group <span class="required">*</span></label>
+            <div class="col-sm-6">
+                @Html.DropDownListFor(s => s.student.group_id, new SelectList(Model.group, "id", "group_name"), "Select Group", new { @class = "form-control" })
+            </div>
+        </div>*@
+                <button type="submit" class="btn btn-success btn-lg text-white">Register</button>
+                }
+            </div>
+</div>
+
+@section Scripts{
+    <script src="~/Scripts/jquery-3.5.1.min.js"></script>
+    <script type="text/javascript">
+    $(document).ready(function () {
+
+        $("#Course").change(function () {
+            $("#Group").empty();
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("getGroup")',
+                dataType: 'json',
+                data: { id: $("#Course").val() },
+                success: function (group) {
+
+                    $.each(group, function (i, group) {
+                        $("#Group").append('<option value="'
+                                                   + group.Value + '">'
+                            + group.Text + '</option>');
+                    });
+                },
+                error: function (ex) {
+                    alert('Failed.' + ex);
+                }
+            });
+            return false;
+        })
+    });
+    </script>
+}

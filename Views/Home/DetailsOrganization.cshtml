@@ -1,0 +1,110 @@
+﻿@model StudentOrganization.Models.Organization
+@using Microsoft.AspNet.Identity
+@{
+    ViewBag.Title = "DetailsOrganization";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+    var functions = ((StudentOrganization.Controllers.HomeController)this.ViewContext.Controller);   
+    var currentUser = User.Identity.GetUserId();
+}
+
+<div class="row">
+    <div class="col-12">
+        <h3 style="padding:1.25rem;">@Html.DisplayFor(model => model.name)</h3>
+        <div class="d-flex justify-content-between">
+            <div class="card-body">
+                <div class="row no-gutters">
+                    <div class="col-md-4 pt-3 pl-5">
+                        <a href="#"><img src="@Url.Content(Model.student_lead.picture_url)" class="rounded-circle" alt="..." width="100" height="100"></a>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <h5 class="card-title"><a href="#">@Model.student_lead.Name</a></h5>
+                            <p class="card-text"><small class="text-muted">@Model.student_lead.Email</small></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            @*@if (functions.IsLeader(currentUser))
+            {
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-danger"><a class="text-white" href="@Url.Action(User.Identity.GetUserId(),"Organization/UserOrganization")">Manage Organization</a></button>
+                </div>
+            }*@
+            @if (!functions.isInRequest(currentUser, Model.id))
+            {
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-success"><a class="text-white" href="@Url.Action("SendRequest", "Organization", new { id = Model.id })">Send Request</a></button>
+                </div>
+            }
+            @if (functions.isInRequest(currentUser, Model.id))
+            {
+                <div class="d-flex align-items-center">
+                    <button class="btn btn-danger"><a class="text-white" href="@Url.Action("CanselRequest", "Organization", new { id = Model.id })">Cansel Request</a></button>
+                </div>
+            }
+        </div>
+        <div class="row">
+            <div class="col-4">
+                <img class="ml-3" src="@Url.Content(Model.picture_url)" width="200" height="200" alt="">
+            </div>
+            <div class="col-8">
+                <ul class="nav nav-tabs" id="myTab" role="tablist">
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link active" id="home-tab" data-toggle="tab" href="#home" role="tab" aria-controls="home" aria-selected="true">Overview</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="profile-tab" data-toggle="tab" href="#profile" role="tab" aria-controls="profile" aria-selected="false">Leader</a>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contact</a>
+                    </li>
+                </ul>
+                <div class="tab-content" id="myTabContent">
+                    <div class="tab-pane fade show active" id="home" role="tabpanel" aria-labelledby="home-tab">
+                        @Model.description
+                    </div>
+                    <div class="tab-pane fade" id="profile" role="tabpanel" aria-labelledby="profile-tab">
+                        @Model.student_lead.Name @Model.student_lead.Surname
+                    </div>
+                    <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
+                        Write to this email:@Model.student_lead.Email
+                    </div>
+                </div>
+            </div>
+            @*<div class="col-md-4">
+                    <h3 class="my-3">Project Description</h3>
+                    <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam viverra euismod odio, gravida pellentesque urna varius vitae. Sed dui lorem, adipiscing in adipiscing et, interdum nec metus. Mauris ultricies, justo eu convallis placerat, felis enim.</p>
+                    <h3 class="my-3">Project Details</h3>
+                    <ul>
+                        <li>Lorem Ipsum</li>
+                        <li>Dolor Sit Amet</li>
+                        <li>Consectetur</li>
+                        <li>Adipiscing Elit</li>
+                    </ul>
+                </div>*@
+
+        <div class="row">
+            <h3>You may like:</h3>
+        </div>
+        <div class="row">
+            <div class="col-10">
+                <div class="row row-cols-1 row-cols-sm-4">
+                    @foreach (var o in ViewBag.Organizations)
+                    {
+                        <div class="col mb-4">
+                            <div class="card h-50">
+                                <img src="@o.picture_url" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title"><a href="@Url.Action("DetailsOrganization","Home",new { id = o.id })">@o.name</a></h5>
+                                    <p class="card-text">@o.description</p>
+                                </div>
+                            </div>
+                        </div>
+                    }
+                </div>
+            </div>
+        </div>            
+        </div>
+    </div>
+</div>
+
